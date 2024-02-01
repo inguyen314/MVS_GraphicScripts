@@ -32,11 +32,11 @@ get_png <- function(filename) {
 
 ####################### CHANGE THESE VARIABLES TO RUN SCRIPT #######################
 # Location to Store Graphics: 
-graphicDirectory <- 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVK_GraphicScripts/'
+graphicDirectory <- 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/'
 
 # Define Location for Supporting Images
-img1 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVK_GraphicScripts/cloud.png")
-img2 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVK_GraphicScripts/usace_mvs_logo.png")
+img1 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/cloud.png")
+img2 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/usace_mvs_logo.png")
 
 ####################### READ DATA FROM JSON #######################
 library(jsonlite)
@@ -44,10 +44,10 @@ library(jsonlite)
 # URLs of the JSON files
 json_urls <- c(
   "https://wm.mvs.ds.usace.army.mil/r/carlyle.json",
-  #"https://wm.mvs.ds.usace.army.mil/r/shelbyville.json",
-  #"https://wm.mvs.ds.usace.army.mil/r/wappapello.json",
-  "https://wm.mvs.ds.usace.army.mil/r/mark_twain.json"
-  #"https://wm.mvs.ds.usace.army.mil/r/rend.json"
+  "https://wm.mvs.ds.usace.army.mil/r/shelbyville.json",
+  "https://wm.mvs.ds.usace.army.mil/r/wappapello.json",
+  "https://wm.mvs.ds.usace.army.mil/r/mark_twain.json",
+  "https://wm.mvs.ds.usace.army.mil/r/rend.json"
 )
 
 # Create a list to store the parsed data
