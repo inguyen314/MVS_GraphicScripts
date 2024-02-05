@@ -12,6 +12,11 @@
 ##            Up above, you define perc_full_labels2 as a data.frame with 4 items (ark_perc_full, sard_perc_full, enid_perc_full, gren_perc_full).
 ##            You are trying to reference the fifth item in an array that is only holding 4 items, thus your subscript is out of bounds.
 ## Version 9. Change Mark Twain circle and arrow to the same color (skyblue2) and arrow.
+##            Add pdf(file) path to run in task scheduler.  
+
+
+## TODO: save to pdf, how?
+##       perc_full_labels2 values mean?
 
 ####################### Import Packages #######################
 # List of required packages
@@ -56,6 +61,7 @@ get_png <- function(filename) {
 ####################### CHANGE THESE VARIABLES TO RUN SCRIPT #######################
 # Location to Store Graphics: 
 graphicDirectory <- 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/'
+pdf(file = 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/Rplots.pdf')
 
 # Define Location for Supporting Images
 img1 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/cloud.png")
@@ -217,7 +223,7 @@ for (i in 1:length(Res_data$ReservoirName)) {
   enid_perc_full <- c(230.0, 246.0, 255.5, 262.0, 268.0)
   gren_perc_full <- c(193.0, 210.5, 219.5, 226.0, 231.0)
   ark_perc_full2 <- c(209.3, 222.40, 229.3, 234.40, 238.3)
-  perc_full_labels2 <- data.frame(ark_perc_full, sard_perc_full, enid_perc_full, gren_perc_full,ark_perc_full2)
+  perc_full_labels2 <- data.frame(ark_perc_full, sard_perc_full, enid_perc_full, gren_perc_full, ark_perc_full2)
   
   
   # Define mountain extent
