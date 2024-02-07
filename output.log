@@ -49,15 +49,15 @@ Warning messages:
 8: package 'stringi' was built under R version 4.2.3 
 9: package 'jsonlite' was built under R version 4.2.3 
 ReservoirName: Carlyle Lk-Kaskaskia 
-CurrentPool: 447.16 
-CurrentPoolStr: 447.16 ft  
-CurrentPoolDateTimeStr: 02-05 13:00 
-CurrentTail: 424.61 
-CurrentTailStr: 424.61 ft 
-Inflow: 2670 cfs 
-Outflow: 7210 cfs 
-SpillwayFlow: 7210 cfs 
-Change24: -0.33 
+CurrentPool: 446.9 
+CurrentPoolStr: 446.9 ft  
+CurrentPoolDateTimeStr: 02-06 08:30 
+CurrentTail: 424.57 
+CurrentTailStr: 424.57 ft 
+Inflow: 1860 cfs 
+Outflow: 7160 cfs 
+SpillwayFlow: 7160 cfs 
+Change24: -0.34 
 GuideCurveElev: 443 
 Streambed: 405 
 BottomofFlood: 445 
@@ -67,15 +67,15 @@ Precip: 0 in
 Turbine: 999.99 cfs 
 
 ReservoirName: Lk Shelbyville-Kaskaskia 
-CurrentPool: 604.55 
-CurrentPoolStr: 604.55 ft  
-CurrentPoolDateTimeStr: 02-05 13:00 
-CurrentTail: 543.48 
-CurrentTailStr: 543.48 ft 
-Inflow: 1950 cfs 
-Outflow: 2660 cfs 
-SpillwayFlow: 2660 cfs 
-Change24: -0.16 
+CurrentPool: 604.38 
+CurrentPoolStr: 604.38 ft  
+CurrentPoolDateTimeStr: 02-06 08:30 
+CurrentTail: 543.45 
+CurrentTailStr: 543.45 ft 
+Inflow: 1470 cfs 
+Outflow: 2640 cfs 
+SpillwayFlow: 2640 cfs 
+Change24: -0.2 
 GuideCurveElev: 594 
 Streambed: 535 
 BottomofFlood: 599.7 
@@ -85,15 +85,15 @@ Precip: 0 in
 Turbine: 999.99 cfs 
 
 ReservoirName: Wappapello Lk-St Francis 
-CurrentPool: 360.25 
-CurrentPoolStr: 360.25 ft  
-CurrentPoolDateTimeStr: 02-05 13:00 
-CurrentTail: 334.38 
-CurrentTailStr: 334.38 ft 
-Inflow: 970 cfs 
-Outflow: 3780 cfs 
-SpillwayFlow: 3780 cfs 
-Change24: -0.71 
+CurrentPool: 359.63 
+CurrentPoolStr: 359.63 ft  
+CurrentPoolDateTimeStr: 02-06 08:30 
+CurrentTail: 334.07 
+CurrentTailStr: 334.07 ft 
+Inflow: 570 cfs 
+Outflow: 3690 cfs 
+SpillwayFlow: 3350 cfs 
+Change24: -0.76 
 GuideCurveElev: 354.74 
 Streambed: 319.74 
 BottomofFlood: 354.74 
@@ -103,15 +103,15 @@ Precip: 0 in
 Turbine: 999.99 cfs 
 
 ReservoirName: Rend Lk-Big Muddy 
-CurrentPool: 405.79 
-CurrentPoolStr: 405.79 ft  
-CurrentPoolDateTimeStr: 02-05 13:00 
-CurrentTail: 374.78 
-CurrentTailStr: 374.78 ft 
-Inflow: 350 cfs 
+CurrentPool: 405.81 
+CurrentPoolStr: 405.81 ft  
+CurrentPoolDateTimeStr: 02-06 08:30 
+CurrentTail: 374.81 
+CurrentTailStr: 374.81 ft 
+Inflow: 200 cfs 
 Outflow: 90 cfs 
 SpillwayFlow: 90 cfs 
-Change24: 0 
+Change24: 0.07 
 GuideCurveElev: 405 
 Streambed: 372 
 BottomofFlood: 405 
@@ -121,33 +121,33 @@ Precip: 0 in
 Turbine: 999.99 cfs 
 
 ReservoirName: Mark Twain Lk-Salt 
-CurrentPool: 605.67 
-CurrentPoolStr: 605.67 ft  
-CurrentPoolDateTimeStr: 02-05 13:00 
-CurrentTail: 525.01 
-CurrentTailStr: 525.01 ft 
-Inflow: 480 cfs 
-Outflow: 50 cfs 
-SpillwayFlow: 2600 cfs 
-Change24: -0.15 
+CurrentPool: 605.54 
+CurrentPoolStr: 605.54 ft  
+CurrentPoolDateTimeStr: 02-06 08:30 
+CurrentTail: 523.78 
+CurrentTailStr: 523.78 ft 
+Inflow: 310 cfs 
+Outflow: 2460 cfs 
+SpillwayFlow: 800 cfs 
+Change24: -0.21 
 GuideCurveElev: 606 
 Streambed: 515 
 BottomofFlood: 567.2 
 TopofFlood: 638 
 TopofDam: 653 
 Precip: 0 in 
-Turbine: 2600 cfs 
+Turbine: 800 cfs 
 
 [1] "Processing ReservoirName: Carlyle Lk-Kaskaskia"
-[1] "Processing CurrentPool: 447.16"
-[1] "Processing CurrentPoolStr: 447.16 ft "
-[1] "Processing CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Processing CurrentTail: 424.61"
-[1] "Processing CurrentTailStr: 424.61 ft"
-[1] "Processing Inflow: 2670 cfs"
-[1] "Processing Outflow: 7210 cfs"
-[1] "Processing SpillwayFlow: 7210 cfs"
-[1] "Processing Change24: -0.33"
+[1] "Processing CurrentPool: 446.9"
+[1] "Processing CurrentPoolStr: 446.9 ft "
+[1] "Processing CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Processing CurrentTail: 424.57"
+[1] "Processing CurrentTailStr: 424.57 ft"
+[1] "Processing Inflow: 1860 cfs"
+[1] "Processing Outflow: 7160 cfs"
+[1] "Processing SpillwayFlow: 7160 cfs"
+[1] "Processing Change24: -0.34"
 [1] "Processing GuideCurveElev: 443"
 [1] "Processing Streambed: 405"
 [1] "Processing BottomofFlood: 445"
@@ -156,15 +156,15 @@ Turbine: 2600 cfs
 [1] "Processing Precip: 0 in"
 [1] "Processing Turbine: 999.99 cfs"
 [1] "Generated ReservoirName: Carlyle Lk-Kaskaskia"
-[1] "Generated CurrentPool: 447.16"
-[1] "Generated CurrentPoolStr: 447.16 ft "
-[1] "Generated CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Generated CurrentTail: 424.61"
-[1] "Generated CurrentTailStr: 424.61 ft"
-[1] "Generated Inflow: 2670 cfs"
-[1] "Generated Outflow: 7210 cfs"
-[1] "Generated SpillwayFlow: 7210 cfs"
-[1] "Generated Change24: -0.33"
+[1] "Generated CurrentPool: 446.9"
+[1] "Generated CurrentPoolStr: 446.9 ft "
+[1] "Generated CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Generated CurrentTail: 424.57"
+[1] "Generated CurrentTailStr: 424.57 ft"
+[1] "Generated Inflow: 1860 cfs"
+[1] "Generated Outflow: 7160 cfs"
+[1] "Generated SpillwayFlow: 7160 cfs"
+[1] "Generated Change24: -0.34"
 [1] "Generated GuideCurveElev: 443"
 [1] "Generated Streambed: 405"
 [1] "Generated BottomofFlood: 445"
@@ -172,15 +172,15 @@ Turbine: 2600 cfs
 [1] "Generated TopofDam: 472"
 [1] "Generated Precip: 0 in"
 [1] "Processing ReservoirName: Lk Shelbyville-Kaskaskia"
-[1] "Processing CurrentPool: 604.55"
-[1] "Processing CurrentPoolStr: 604.55 ft "
-[1] "Processing CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Processing CurrentTail: 543.48"
-[1] "Processing CurrentTailStr: 543.48 ft"
-[1] "Processing Inflow: 1950 cfs"
-[1] "Processing Outflow: 2660 cfs"
-[1] "Processing SpillwayFlow: 2660 cfs"
-[1] "Processing Change24: -0.16"
+[1] "Processing CurrentPool: 604.38"
+[1] "Processing CurrentPoolStr: 604.38 ft "
+[1] "Processing CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Processing CurrentTail: 543.45"
+[1] "Processing CurrentTailStr: 543.45 ft"
+[1] "Processing Inflow: 1470 cfs"
+[1] "Processing Outflow: 2640 cfs"
+[1] "Processing SpillwayFlow: 2640 cfs"
+[1] "Processing Change24: -0.2"
 [1] "Processing GuideCurveElev: 594"
 [1] "Processing Streambed: 535"
 [1] "Processing BottomofFlood: 599.7"
@@ -189,15 +189,15 @@ Turbine: 2600 cfs
 [1] "Processing Precip: 0 in"
 [1] "Processing Turbine: 999.99 cfs"
 [1] "Generated ReservoirName: Lk Shelbyville-Kaskaskia"
-[1] "Generated CurrentPool: 604.55"
-[1] "Generated CurrentPoolStr: 604.55 ft "
-[1] "Generated CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Generated CurrentTail: 543.48"
-[1] "Generated CurrentTailStr: 543.48 ft"
-[1] "Generated Inflow: 1950 cfs"
-[1] "Generated Outflow: 2660 cfs"
-[1] "Generated SpillwayFlow: 2660 cfs"
-[1] "Generated Change24: -0.16"
+[1] "Generated CurrentPool: 604.38"
+[1] "Generated CurrentPoolStr: 604.38 ft "
+[1] "Generated CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Generated CurrentTail: 543.45"
+[1] "Generated CurrentTailStr: 543.45 ft"
+[1] "Generated Inflow: 1470 cfs"
+[1] "Generated Outflow: 2640 cfs"
+[1] "Generated SpillwayFlow: 2640 cfs"
+[1] "Generated Change24: -0.2"
 [1] "Generated GuideCurveElev: 594"
 [1] "Generated Streambed: 535"
 [1] "Generated BottomofFlood: 599.7"
@@ -205,15 +205,15 @@ Turbine: 2600 cfs
 [1] "Generated TopofDam: 643"
 [1] "Generated Precip: 0 in"
 [1] "Processing ReservoirName: Wappapello Lk-St Francis"
-[1] "Processing CurrentPool: 360.25"
-[1] "Processing CurrentPoolStr: 360.25 ft "
-[1] "Processing CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Processing CurrentTail: 334.38"
-[1] "Processing CurrentTailStr: 334.38 ft"
-[1] "Processing Inflow: 970 cfs"
-[1] "Processing Outflow: 3780 cfs"
-[1] "Processing SpillwayFlow: 3780 cfs"
-[1] "Processing Change24: -0.71"
+[1] "Processing CurrentPool: 359.63"
+[1] "Processing CurrentPoolStr: 359.63 ft "
+[1] "Processing CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Processing CurrentTail: 334.07"
+[1] "Processing CurrentTailStr: 334.07 ft"
+[1] "Processing Inflow: 570 cfs"
+[1] "Processing Outflow: 3690 cfs"
+[1] "Processing SpillwayFlow: 3350 cfs"
+[1] "Processing Change24: -0.76"
 [1] "Processing GuideCurveElev: 354.74"
 [1] "Processing Streambed: 319.74"
 [1] "Processing BottomofFlood: 354.74"
@@ -222,15 +222,15 @@ Turbine: 2600 cfs
 [1] "Processing Precip: 0 in"
 [1] "Processing Turbine: 999.99 cfs"
 [1] "Generated ReservoirName: Wappapello Lk-St Francis"
-[1] "Generated CurrentPool: 360.25"
-[1] "Generated CurrentPoolStr: 360.25 ft "
-[1] "Generated CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Generated CurrentTail: 334.38"
-[1] "Generated CurrentTailStr: 334.38 ft"
-[1] "Generated Inflow: 970 cfs"
-[1] "Generated Outflow: 3780 cfs"
-[1] "Generated SpillwayFlow: 3780 cfs"
-[1] "Generated Change24: -0.71"
+[1] "Generated CurrentPool: 359.63"
+[1] "Generated CurrentPoolStr: 359.63 ft "
+[1] "Generated CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Generated CurrentTail: 334.07"
+[1] "Generated CurrentTailStr: 334.07 ft"
+[1] "Generated Inflow: 570 cfs"
+[1] "Generated Outflow: 3690 cfs"
+[1] "Generated SpillwayFlow: 3350 cfs"
+[1] "Generated Change24: -0.76"
 [1] "Generated GuideCurveElev: 354.74"
 [1] "Generated Streambed: 319.74"
 [1] "Generated BottomofFlood: 354.74"
@@ -238,15 +238,15 @@ Turbine: 2600 cfs
 [1] "Generated TopofDam: 419.74"
 [1] "Generated Precip: 0 in"
 [1] "Processing ReservoirName: Rend Lk-Big Muddy"
-[1] "Processing CurrentPool: 405.79"
-[1] "Processing CurrentPoolStr: 405.79 ft "
-[1] "Processing CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Processing CurrentTail: 374.78"
-[1] "Processing CurrentTailStr: 374.78 ft"
-[1] "Processing Inflow: 350 cfs"
+[1] "Processing CurrentPool: 405.81"
+[1] "Processing CurrentPoolStr: 405.81 ft "
+[1] "Processing CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Processing CurrentTail: 374.81"
+[1] "Processing CurrentTailStr: 374.81 ft"
+[1] "Processing Inflow: 200 cfs"
 [1] "Processing Outflow: 90 cfs"
 [1] "Processing SpillwayFlow: 90 cfs"
-[1] "Processing Change24: 0"
+[1] "Processing Change24: 0.07"
 [1] "Processing GuideCurveElev: 405"
 [1] "Processing Streambed: 372"
 [1] "Processing BottomofFlood: 405"
@@ -255,15 +255,15 @@ Turbine: 2600 cfs
 [1] "Processing Precip: 0 in"
 [1] "Processing Turbine: 999.99 cfs"
 [1] "Generated ReservoirName: Rend Lk-Big Muddy"
-[1] "Generated CurrentPool: 405.79"
-[1] "Generated CurrentPoolStr: 405.79 ft "
-[1] "Generated CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Generated CurrentTail: 374.78"
-[1] "Generated CurrentTailStr: 374.78 ft"
-[1] "Generated Inflow: 350 cfs"
+[1] "Generated CurrentPool: 405.81"
+[1] "Generated CurrentPoolStr: 405.81 ft "
+[1] "Generated CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Generated CurrentTail: 374.81"
+[1] "Generated CurrentTailStr: 374.81 ft"
+[1] "Generated Inflow: 200 cfs"
 [1] "Generated Outflow: 90 cfs"
 [1] "Generated SpillwayFlow: 90 cfs"
-[1] "Generated Change24: 0"
+[1] "Generated Change24: 0.07"
 [1] "Generated GuideCurveElev: 405"
 [1] "Generated Streambed: 372"
 [1] "Generated BottomofFlood: 405"
@@ -271,32 +271,32 @@ Turbine: 2600 cfs
 [1] "Generated TopofDam: 424"
 [1] "Generated Precip: 0 in"
 [1] "Processing ReservoirName: Mark Twain Lk-Salt"
-[1] "Processing CurrentPool: 605.67"
-[1] "Processing CurrentPoolStr: 605.67 ft "
-[1] "Processing CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Processing CurrentTail: 525.01"
-[1] "Processing CurrentTailStr: 525.01 ft"
-[1] "Processing Inflow: 480 cfs"
-[1] "Processing Outflow: 50 cfs"
-[1] "Processing SpillwayFlow: 2600 cfs"
-[1] "Processing Change24: -0.15"
+[1] "Processing CurrentPool: 605.54"
+[1] "Processing CurrentPoolStr: 605.54 ft "
+[1] "Processing CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Processing CurrentTail: 523.78"
+[1] "Processing CurrentTailStr: 523.78 ft"
+[1] "Processing Inflow: 310 cfs"
+[1] "Processing Outflow: 2460 cfs"
+[1] "Processing SpillwayFlow: 800 cfs"
+[1] "Processing Change24: -0.21"
 [1] "Processing GuideCurveElev: 606"
 [1] "Processing Streambed: 515"
 [1] "Processing BottomofFlood: 567.2"
 [1] "Processing TopofFlood: 638"
 [1] "Processing TopofDam: 653"
 [1] "Processing Precip: 0 in"
-[1] "Processing Turbine: 2600 cfs"
+[1] "Processing Turbine: 800 cfs"
 [1] "Generated ReservoirName: Mark Twain Lk-Salt"
-[1] "Generated CurrentPool: 605.67"
-[1] "Generated CurrentPoolStr: 605.67 ft "
-[1] "Generated CurrentPoolDateTimeStr: 02-05 13:00"
-[1] "Generated CurrentTail: 525.01"
-[1] "Generated CurrentTailStr: 525.01 ft"
-[1] "Generated Inflow: 480 cfs"
-[1] "Generated Outflow: 50 cfs"
-[1] "Generated SpillwayFlow: 2600 cfs"
-[1] "Generated Change24: -0.15"
+[1] "Generated CurrentPool: 605.54"
+[1] "Generated CurrentPoolStr: 605.54 ft "
+[1] "Generated CurrentPoolDateTimeStr: 02-06 08:30"
+[1] "Generated CurrentTail: 523.78"
+[1] "Generated CurrentTailStr: 523.78 ft"
+[1] "Generated Inflow: 310 cfs"
+[1] "Generated Outflow: 2460 cfs"
+[1] "Generated SpillwayFlow: 800 cfs"
+[1] "Generated Change24: -0.21"
 [1] "Generated GuideCurveElev: 606"
 [1] "Generated Streambed: 515"
 [1] "Generated BottomofFlood: 567.2"
