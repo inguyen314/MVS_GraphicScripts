@@ -15,15 +15,16 @@
 ##            Add pdf(file) path to run in task scheduler. 
 ## Version 10. Fix precip legend. 
 ## Version 11. Add spill, Total, and Remove Gen. Add envir variables
+## Version 12. Add languageserver package and verify spillway.
 
 
-## TODO: save to pdf, how?
+## TODO: save to pdf, how? 
 ##       perc_full_labels2 values mean?
 
 ####################### Import Packages #######################
 # List of required packages
 required_packages <- c("ggplot2", "numform", "plyr", "dplyr", "lubridate", 
-                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png")
+                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png", "languageserver")
 
 # Install and load packages if not already installed
 for (package_name in required_packages) {
@@ -44,6 +45,7 @@ library(stringi);
 library(RColorBrewer); 
 library(jsonlite);
 library(png);
+library(languageserver);
 
 ####################### DEFINE RELEVANT FUNCTIONS #######################
 # Function to Wrap long labels for the graphic
@@ -65,7 +67,7 @@ get_png <- function(filename) {
 ####################### CHANGE THESE VARIABLES TO RUN SCRIPT #######################
 if (Sys.getenv("USERNAME") == "B3ECHIHN") {
   graphicDirectory <- 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/'
-  pdf(file = 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/Rplots.pdf')
+           pdf(file = 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/Rplots.pdf')
   
   # Define Location for Supporting Images
   img1 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/cloud.png")
@@ -97,6 +99,7 @@ CurrentTailStr <- character()
 Inflow <- character()
 Outflow <- character()
 SpillwayFlow <- character()
+TotalFlow <- character()
 Change24 <- numeric()
 GuideCurveElev <- numeric()
 Streambed <- numeric()
@@ -117,7 +120,8 @@ for (project_id in names(json_data)) {
   CurrentTailStr <- c(CurrentTailStr, paste0(reservoir$tw_stage, " ft"))
   Inflow <- c(Inflow, paste0(reservoir$inflow, " cfs"))
   Outflow <- c(Outflow, paste0(reservoir$outflow_midnight, " cfs"))
-  SpillwayFlow <- c(SpillwayFlow, paste0(reservoir$outflow_evening, " cfs"))
+  SpillwayFlow <- c(SpillwayFlow, paste0(reservoir$spillway, " cfs"))
+  TotalFlow <- c(TotalFlow, paste0(reservoir$flow_total, " cfs"))
   Change24 <- c(Change24, as.numeric(reservoir$pool_stage24))
   GuideCurveElev <- c(GuideCurveElev, as.numeric(reservoir$rule_curve))
   Streambed <- c(Streambed, as.numeric(reservoir$streambed))
@@ -139,6 +143,7 @@ Res_data <- data.frame(
   Inflow = Inflow,
   Outflow = Outflow,
   SpillwayFlow = SpillwayFlow,
+  TotalFlow = TotalFlow,
   Change24 = Change24,
   GuideCurveElev = GuideCurveElev,
   Streambed = Streambed,
@@ -161,6 +166,7 @@ for (i in seq_along(ReservoirName)) {
   cat("Inflow:", Inflow[i], "\n")
   cat("Outflow:", Outflow[i], "\n")
   cat("SpillwayFlow:", SpillwayFlow[i], "\n")
+  cat("TotalFlow:", TotalFlow[i], "\n")
   cat("Change24:", Change24[i], "\n")
   cat("GuideCurveElev:", GuideCurveElev[i], "\n")
   cat("Streambed:", Streambed[i], "\n")
@@ -185,6 +191,7 @@ for (i in 1:length(Res_data$ReservoirName)) {
   print(paste("Processing Inflow:", Res_data$Inflow[i]))
   print(paste("Processing Outflow:", Res_data$Outflow[i]))
   print(paste("Processing SpillwayFlow:", Res_data$SpillwayFlow[i]))
+  print(paste("Processing TotalFlow:", Res_data$TotalFlow[i]))
   print(paste("Processing Change24:", Res_data$Change24[i]))
   print(paste("Processing GuideCurveElev:", Res_data$GuideCurveElev[i]))
   print(paste("Processing Streambed:", Res_data$Streambed[i]))
@@ -282,9 +289,9 @@ for (i in 1:length(Res_data$ReservoirName)) {
     point_x <- c(500,350,950,1200, 1450)
     point_y <- c(Res_data$TopofDam[i]+10, Res_data$TopofDam[i]+20, Res_data$Streambed[i]+10, Res_data$Streambed[i]+15, Res_data$Streambed[i]+15)
     point_label <- c("Inflow", "Precipitation", "Generate", "Spillway", "Q Total")
-    point_label_short <- c("IN", "P", "GEN", "SPILL", "TOT")
-    point_flow <- c(Res_data$Inflow[i], Res_data$Precip[i], Res_data$Outflow[i], Res_data$Turbine[i], Res_data$Turbine[i])
-    point_color <- c("skyblue2", "steelblue4", "steelblue4", "steelblue4", "steelblue4")
+    point_label_short <- c("IN", "P", "GEN", "SPWY", "TOT")
+    point_flow <- c(Res_data$Inflow[i], Res_data$Precip[i], Res_data$Outflow[i], Res_data$SpillwayFlow[i], Res_data$TotalFlow[i])
+    point_color <- c("skyblue2", "skyblue2", "steelblue4", "steelblue4", "steelblue4")
     point_DF <- data.frame(point_x, point_y, point_label, point_label_short,
                            point_flow, point_color, stringsAsFactors = F)
     arrow1x <- c(1000, 1000, 1000, 1000, 1000)
@@ -296,7 +303,7 @@ for (i in 1:length(Res_data$ReservoirName)) {
     point_label <- c("Inflow", "Precipitation", "Outflow")
     point_label_short <- c("IN", "P", "OUT")
     point_flow <- c(Res_data$Inflow[i], Res_data$Precip[i], Res_data$Outflow[i])
-    point_color <- c("steelblue2", "steelblue4", "steelblue4")
+    point_color <- c("skyblue2", "skyblue2", "steelblue4")
     point_DF <- data.frame(point_x, point_y, point_label, point_label_short,
                            point_flow, point_color, stringsAsFactors = F)
     arrow1x <- c(1000, 1000, 1000)
@@ -352,9 +359,9 @@ for (i in 1:length(Res_data$ReservoirName)) {
     
     
     # Draw OUTFLOW Line Segment/Arrow
-    geom_segment(data = point_DF, aes(x=point_x[2]+30, xend=point_x[2]+120, y=point_y[2], yend=point_y[2]), color="steelblue4", linewidth=2) +
+    geom_segment(data = point_DF, aes(x=point_x[2]+30, xend=point_x[2]+120, y=point_y[2], yend=point_y[2]), color="skyblue2", linewidth=2) +
     annotate("segment", x=point_DF$point_x[2]+25, xend=point_DF$point_x[2]+140, y=point_DF$point_y[2], yend=point_DF$point_y[2], linejoin="round", 
-             arrow=arrow(type="closed", length=unit(0.03, "npc")), color="steelblue4") +
+             arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
     
     
     # Draw PRECIP Line Segment/Arrow
@@ -464,7 +471,7 @@ for (i in 1:length(Res_data$ReservoirName)) {
     
     
     # Adding a point with label "P" for precipitation
-    geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 9.5), color = "steelblue4", size = 6) +
+    geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 9.5), color = "skyblue2", size = 6) +
     # Adding a text annotation for precipitation
     annotate("text", x = 1480, y = Res_data$TopofDam[i] - 9.5, label = "P", color = "white", size = 1.5, fontface = 2) +
     # Adding a text annotation for precipitation
@@ -480,7 +487,7 @@ for (i in 1:length(Res_data$ReservoirName)) {
   
     
     # Adding points for various reservoir levels
-    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-23.5), color="skyblue2", size=6) +
+    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-23.5), color="steelblue4", size=6) +
     # Adding text annotation for the first point
     annotate("text", x=1480, y=Res_data$TopofDam[i]-23.5, label="SPWY", color="white", size=1.5, fontface=2) +
     # Adding text annotation for the first point
@@ -501,6 +508,13 @@ for (i in 1:length(Res_data$ReservoirName)) {
     annotate("text", x=1480, y=Res_data$TopofDam[i]-37.5, label="GEN", color="white", size=1.5, fontface=2) +
     # Adding text annotation for the third point
     annotate("text", x=1520, y=Res_data$TopofDam[i]-37.5, label="Generate", color="gray19", size=3, hjust=0) +
+    
+    # Adding points for another reservoir level
+    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-44.5), color="steelblue4", size=6) +
+    # Adding text annotation for the third point
+    annotate("text", x=1480, y=Res_data$TopofDam[i]-44.5, label="TOT", color="white", size=1.5, fontface=2) +
+    # Adding text annotation for the third point
+    annotate("text", x=1520, y=Res_data$TopofDam[i]-44.5, label="Flow Total", color="gray19", size=3, hjust=0) +
   
     
     # Set Theme and Scale for Graphic

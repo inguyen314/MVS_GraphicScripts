@@ -15,6 +15,7 @@
 ##            Add pdf(file) path to run in task scheduler. 
 ## Version 10. Fix precip legend. 
 ## Version 11. Add spill, Total, and Remove Gen. Add envir variables
+## Version 12. Add languageserver package and verify spillway.
 
 
 ## TODO: save to pdf, how?
@@ -23,7 +24,7 @@
 ####################### Import Packages #######################
 # List of required packages
 required_packages <- c("ggplot2", "numform", "plyr", "dplyr", "lubridate", 
-                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png")
+                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png", "languageserver")
 
 # Install and load packages if not already installed
 for (package_name in required_packages) {
@@ -44,6 +45,7 @@ library(stringi);
 library(RColorBrewer); 
 library(jsonlite);
 library(png);
+library(languageserver);
 
 ####################### DEFINE RELEVANT FUNCTIONS #######################
 # Function to Wrap long labels for the graphic
@@ -65,7 +67,7 @@ get_png <- function(filename) {
 ####################### CHANGE THESE VARIABLES TO RUN SCRIPT #######################
 if (Sys.getenv("USERNAME") == "B3ECHIHN") {
   graphicDirectory <- 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/'
-  pdf(file = 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/Rplots.pdf')
+           pdf(file = 'C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/Rplots.pdf')
   
   # Define Location for Supporting Images
   img1 <- get_png("C:/Users/B3ECHIHN/Documents/water_control/web/rebuild_internal_web/MVS_GraphicScripts/cloud.png")
