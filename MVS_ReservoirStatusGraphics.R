@@ -18,13 +18,13 @@
 ## Version 12. Add languageserver package and verify spillway.
 
 
-## TODO: save to pdf, how? 
+## TODO: save to pdf, how?
 ##       perc_full_labels2 values mean?
 
 ####################### Import Packages #######################
 # List of required packages
 required_packages <- c("ggplot2", "numform", "plyr", "dplyr", "lubridate", 
-                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png", "languageserver")
+                       "rvest", "stringr", "stringi", "RColorBrewer", "jsonlite", "png")
 
 # Install and load packages if not already installed
 for (package_name in required_packages) {
@@ -45,7 +45,6 @@ library(stringi);
 library(RColorBrewer); 
 library(jsonlite);
 library(png);
-library(languageserver);
 
 ####################### DEFINE RELEVANT FUNCTIONS #######################
 # Function to Wrap long labels for the graphic
