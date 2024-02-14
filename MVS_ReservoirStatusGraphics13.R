@@ -17,6 +17,7 @@
 ## Version 11. Add spill, Total, and Remove Gen. Add envir variables
 ## Version 12. Add languageserver package and verify spillway.
 ## Version 13. Change Json file to grab yesterday gen, spill and total. Add lable to show that they are yesterday values. 
+##             dynamilly display legend
 
 
 ## TODO: save to pdf, how?
@@ -333,213 +334,396 @@ for (i in 1:length(Res_data$ReservoirName)) {
   time <- f_12_hour(x = Sys.time(), format="%I:%M %p")
   date_time <- paste(date, time, "CST")
   
+  if (Res_data$ReservoirName[i] == "Mark Twain Lk-Salt") {
+    # Create the Graphic
+    p1 <- ggplot() +  
+      # Add Supporting Graphics to Plot
+      annotation_custom(img1, xmin=200, xmax=300, ymin=Res_data$TopofDam[i]+8, ymax=Res_data$TopofDam[i]+28) +
+      annotation_custom(img2, xmin=1625, xmax=1800, ymin=Res_data$TopofDam[i], ymax=Res_data$TopofDam[i]+50) +
+      
+      
+      # Draw the Reservoir Polygon
+      geom_polygon(data = positions, mapping = aes(x=resx, y=resy), fill="grey") +
+      
+      
+      # Draw Flow Circles
+      geom_point(data = point_DF, mapping = aes(x = point_x, y = point_y, color = point_color), size = 10) + 
+      scale_colour_manual(values = c("skyblue2", "steelblue4", "steelblue4", "skyblue2", "skyblue2"), 
+                          labels = c("Inflow", "Precipitation", "Outflow", "Generate", "Spillway")) +
+      
+      
+      # Draw INFLOW Line Segments/Arrows
+      geom_segment(data = point_DF, aes(x=50, xend=point_x[1], y=point_y[1], yend=point_y[1]), linewidth=2, color="skyblue2") + 
+      geom_segment(data = point_DF, aes(x=point_x[1], xend=point_x[1], y=point_y[1], yend=point_y[1]-14), linewidth=2, color="skyblue2") +
+      annotate("segment", x=point_DF$point_x[1], xend=point_DF$point_x[1], y=point_DF$point_y[1], yend=point_DF$point_y[1]-16, linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
+      
+      
+      # Draw OUTFLOW Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[2]+30, xend=point_x[2]+120, y=point_y[2], yend=point_y[2]), color="skyblue2", linewidth=2) +
+      annotate("segment", x=point_DF$point_x[2]+25, xend=point_DF$point_x[2]+140, y=point_DF$point_y[2], yend=point_DF$point_y[2], linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
+      
+      
+      # Draw PRECIP Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[3]+30, xend=point_x[3]+120, y=point_y[3], yend=point_y[3]), color="steelblue4", linewidth=2) +
+      annotate("segment", x=point_DF$point_x[3], xend=point_DF$point_x[3]+140, y=point_DF$point_y[3], yend=point_DF$point_y[3], linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="steelblue4") +
+      
+      
+      # Draw SPILLWAY Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[4] + 30, xend=point_x[4] + 100, y=point_y[4], yend=point_y[4]), color="steelblue4", linewidth=2) +
+      annotate("segment", x = point_x[4] + 30, xend = point_x[4] + 110, y = point_y[4], yend = point_y[4], linejoin = "round", 
+               arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
+      
+      
+      # Draw GENERATE Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[5] + 30, xend=point_x[5] + 100, y=point_y[5], yend=point_y[5]), color="steelblue4", linewidth=2) +
+      annotate("segment", x = point_x[5] + 30, xend = point_x[5] + 110, y = point_y[5], yend = point_y[5], linejoin = "round", 
+               arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
+    
+      
+      # Draw Flow annotations (text)
+      geom_text(data = point_DF, mapping = aes(x=point_x, y=point_y, label=point_label_short), 
+                linewidth = 2.5, size = 2.75, color = "white", fontface=2) + 
+      geom_text(data = point_DF, mapping = aes(x=point_x[1]+50, y=point_y[1], label=point_flow[1]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[2]+50, y=point_y[2]+5, label=point_flow[2]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[3]+50, y=point_y[3]+5, label=point_flow[3]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[4]+50, y=point_y[4]+5, label=point_flow[4]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[5]+50, y=point_y[5]+5, label=point_flow[5]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      
+      
+      # Draw Pool/Tail-water Polygons
+      geom_polygon(data = pool_water_positions, aes(x = pool_x, y = pool_y), fill = "lightskyblue1") +
+      geom_polygon(data = tail_water_positions, aes(x = tail_x, y = tail_y), fill = "skyblue2") +
+      
+      
+      # Draw the Mountain
+      geom_polygon(data = mountdf, aes(x = mountx, y = mounty), fill = "grey") +
+      geom_polygon(data = mdf2, aes(x = mx2, y = my2), fill = "gray50") +
+      geom_polygon(data = mdf3, aes(x = mx3, y = my3), fill = "gray50") +
+      geom_polygon(data = mdf4, aes(x = mx4, y = my4), fill = "gray50") +
+      
+      
+      # Draw the remaining ground connecting Mountain to reservoir
+      geom_segment(data = Res_data, aes(x = 375, xend = 375, y = Streambed[i] - 5, yend = TopofDam[i] + 5.5), color = "grey", linewidth = 2) +
+      geom_curve(data = Res_data, aes(x = 375, xend = 350, y = TopofDam[i] + 5, yend = TopofDam[i] + 7), curvature = 0.2, angle = 90, ncp = 100, linewidth = 2, color = "grey") +
+      geom_segment(data = Res_data, aes(x = 351, xend = 25, y = TopofDam[i] + 7, yend = TopofDam[i] + 7), color = "grey", linewidth = 2) +
+      
+      
+      # Draw % Full scale
+      geom_tile(data = perc_full, aes(y = y, x = 750, fill = PercFull), width = 35) +
+      scale_fill_gradient2(low = "green", mid = "yellow", high = "red", midpoint = 50) +
+      annotate("text", x = 800, y = perc_full_labels2[[i]], label = c("0%", "25%", "50%", "75%", "100%"), color = "gray19", linewidth = 2, fontface = 1) +
+      
+      
+      # Draw Elevation Scale
+      geom_segment(data = scale_elev_DF, aes(x = scale_elev_xbegin, xend = scale_elev_xend, y = scale_elev_y, yend = scale_elev_y), color = "grey", linewidth = 0.4) +
+      geom_text(data = scale_elev_DF, aes(x = scale_elev_xbegin - 30, y = scale_elev_y, label = scale_elev_y), linewidth = 2, size = 2.5, color = "gray60") +
+      
+      
+      # Draw Reservoir Pertinent Elevation Line Segments
+      geom_segment(data = Res_data, aes(y = Streambed[i], yend = Streambed[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = BottomofFlood[i], yend = BottomofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = TopofFlood[i], yend = TopofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = TopofDam[i], yend = TopofDam[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = GuideCurveElev[i], yend = GuideCurveElev[i], x = pool_water_positions$pool_x[1] + 8, xend = pool_water_positions$pool_x[3] + 100), linewidth = 0.5, linetype = 8, color = 'lightskyblue4') +
+      
+      
+      # Draw the Reservoir Pertinent Elevation Labels
+      annotate("text", x = 240, y = Res_data$TopofDam[i] - 1, label = wrapper(paste("Top of Dam", paste0(Res_data$TopofDam[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$TopofFlood[i] + 1, label = wrapper(paste("Top of Flood", paste0(Res_data$TopofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$BottomofFlood[i] - 1, label = wrapper(paste("Bottom of Flood", paste0(Res_data$BottomofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$Streambed[i] - 1, label = wrapper(paste("Streambed", paste0(Res_data$Streambed[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 900, y = as.numeric(Res_data$GuideCurveElev[i]) + 0, label = paste("Rule Curve ", paste0("(", Res_data$GuideCurveElev[i], "')")), color = "lightskyblue4", linewidth = 2, size = 2.5, fontface = 1, hjust = 0.5) +
+      
+      
+      # Draw the Pool and Tail-water Labels
+      annotate("text", x = 450, y = as.numeric(Res_data$CurrentPool[i]) - 1, label = paste0(Res_data$CurrentPoolStr[i], "(", Res_data$Change24[i], ")\n", Res_data$CurrentPoolDateTimeStr[1]), color = "gray19", size = 2.5, fontface = 1, hjust = 0, vjust = 1) +
+      annotate("text", x = 1795, y = Res_data$Streambed[i]+3.5, label = Res_data$CurrentTailStr[i], color = "gray19", size = 3.0, fontface = 1, hjust = 1) +
+      
+      # Draw Title/Additional Graphic Text
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+30, label = "FLOOD CONTROL STATUS", color = "black", linewidth = 4.5, fontface = 2, hjust = 1) + 
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+24, label = paste(Res_data$ReservoirName[i], "Lake, MVS"), color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+19, label = date_time, color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
+      
+      
+      # Draw Legend
+      # Adding a text annotation for the legend
+      annotate("text", x = 1655, y = Res_data$TopofDam[i] + 10, label = "Legend", color = "black", size = 3, fontface = 2, hjust = 2) +
+      # Adding a horizontal line segment
+      geom_segment(data = Res_data, aes(y = TopofDam[i] + 6, yend = TopofDam[i] + 6, x = 1460, xend = 1800), size = 1, color = 'grey') +
+      
+      # Adding a rectangular shape with light blue fill
+      geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i], ymax = TopofDam[i] + 4), fill = "lightskyblue1") +
+      # Adding a text annotation for the current lake level
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] + 2, label = "Current Lake Level", color = "gray19", size = 3, hjust = 0) +
+    
+      
+      # Adding a rectangular shape with sky blue fill
+      geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i] - 1.5, ymax = TopofDam[i] - 5.5), fill = "skyblue2") +
+      # Adding a text annotation for tail water
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 3.5, label = "Tail Water", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding a point with label "P" for precipitation
+      geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 9.5), color = "skyblue2", size = 6) +
+      # Adding a text annotation for precipitation
+      annotate("text", x = 1480, y = Res_data$TopofDam[i] - 9.5, label = "P", color = "white", size = 1.5, fontface = 2) +
+      # Adding a text annotation for precipitation
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 9.5, label = "Precipitation", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding another point with label "IN" for inflow
+      geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 16.5), color = "skyblue2", size = 6) +
+      # Adding a text annotation for inflow
+      annotate("text", x = 1480, y = Res_data$TopofDam[i] - 16.5, label = "IN", color = "white", size = 1.5, fontface = 2) +
+      # Adding a text annotation for inflow
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 16.5, label = "Inflow", color = "gray19", size = 3, hjust = 0) +
+    
+      
+      # Adding points for another reservoir level
+      geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-23.5), color="steelblue4", size=6) +
+      # Adding text annotation for the second point
+      annotate("text", x=1480, y=Res_data$TopofDam[i]-23.5, label="OUT", color="white", size=1.5, fontface=2) +
+      # Adding text annotation for the second point
+      annotate("text", x=1520, y=Res_data$TopofDam[i]-23.5, label="Outflow", color="gray19", size=3, hjust=0) +
+      
+      # Adding points for various reservoir levels
+      geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-30.5), color="steelblue4", size=6) +
+      # Adding text annotation for the first point
+      annotate("text", x=1480, y=Res_data$TopofDam[i]-30.5, label="SPWY", color="white", size=1.5, fontface=2) +
+      # Adding text annotation for the first point
+      annotate("text", x=1520, y=Res_data$TopofDam[i]-30.5, label="Spillway (Yesterday)", color="gray19", size=3, hjust=0) +
+      
   
-  # Create the Graphic
-  p1 <- ggplot() +  
-    # Add Supporting Graphics to Plot
-    annotation_custom(img1, xmin=200, xmax=300, ymin=Res_data$TopofDam[i]+8, ymax=Res_data$TopofDam[i]+28) +
-    annotation_custom(img2, xmin=1625, xmax=1800, ymin=Res_data$TopofDam[i], ymax=Res_data$TopofDam[i]+50) +
+      # Adding points for another reservoir level
+      geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-37.5), color="steelblue4", size=6) +
+      # Adding text annotation for the third point
+      annotate("text", x=1480, y=Res_data$TopofDam[i]-37.5, label="GEN", color="white", size=1.5, fontface=2) +
+      # Adding text annotation for the third point
+      annotate("text", x=1520, y=Res_data$TopofDam[i]-37.5, label="Generate (Yesterday)", color="gray19", size=3, hjust=0) +
+      
+      
+      # Adding points for another reservoir level
+      geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-44.5), color="steelblue4", size=6) +
+      # Adding text annotation for the third point
+      annotate("text", x=1480, y=Res_data$TopofDam[i]-44.5, label="TOT", color="white", size=1.5, fontface=2) +
+      # Adding text annotation for the third point
+      annotate("text", x=1520, y=Res_data$TopofDam[i]-44.5, label="Flow Total (Yesterday Avg)", color="gray19", size=3, hjust=0) +
     
+      
+      # Set Theme and Scale for Graphic
+      theme_void() + 
+      theme(legend.position="none") +
+      scale_y_continuous(limits = c(Res_data$Streambed[i]-10, Res_data$TopofDam[i]+30)) +
+      scale_x_continuous(limits = c(25,1800)) +
+      theme(panel.background = element_rect(fill='white',color='white'))+
+      theme(legend.position="none",
+            panel.background = element_rect(fill='white', color='white', size = 1), # Add border
+            
+            #panel.grid.major = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor = element_line(color = "gray", size = 0.25),
+            #panel.grid.major.x = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor.x = element_line(color = "gray", size = 0.25),
+            #panel.grid.major.y = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor.y = element_line(color = "gray", size = 0.25),
+            
+            plot.background = element_rect(color = "black", size = 1), # Add border to the entire plot
+            plot.margin = margin(10, 10, 10, 10))+ # Adjust margins as needed
+      # Add vertical line at x = 0
+      geom_vline(xintercept = 0, linetype = "dashed", color = "red", size = 1) +
+      # Add horizontal line at y = 0
+      geom_hline(yintercept = 0, linetype = "dashed", color = "blue", size = 1)
+  } else {
+    # Create the Graphic
+    p1 <- ggplot() +  
+      # Add Supporting Graphics to Plot
+      annotation_custom(img1, xmin=200, xmax=300, ymin=Res_data$TopofDam[i]+8, ymax=Res_data$TopofDam[i]+28) +
+      annotation_custom(img2, xmin=1625, xmax=1800, ymin=Res_data$TopofDam[i], ymax=Res_data$TopofDam[i]+50) +
+      
+      
+      # Draw the Reservoir Polygon
+      geom_polygon(data = positions, mapping = aes(x=resx, y=resy), fill="grey") +
+      
+      
+      # Draw Flow Circles
+      geom_point(data = point_DF, mapping = aes(x = point_x, y = point_y, color = point_color), size = 10) + 
+      scale_colour_manual(values = c("skyblue2", "steelblue4", "steelblue4", "skyblue2", "skyblue2"), 
+                          labels = c("Inflow", "Precipitation", "Outflow", "Generate", "Spillway")) +
+      
+      
+      # Draw INFLOW Line Segments/Arrows
+      geom_segment(data = point_DF, aes(x=50, xend=point_x[1], y=point_y[1], yend=point_y[1]), linewidth=2, color="skyblue2") + 
+      geom_segment(data = point_DF, aes(x=point_x[1], xend=point_x[1], y=point_y[1], yend=point_y[1]-14), linewidth=2, color="skyblue2") +
+      annotate("segment", x=point_DF$point_x[1], xend=point_DF$point_x[1], y=point_DF$point_y[1], yend=point_DF$point_y[1]-16, linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
+      
+      
+      # Draw OUTFLOW Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[2]+30, xend=point_x[2]+120, y=point_y[2], yend=point_y[2]), color="skyblue2", linewidth=2) +
+      annotate("segment", x=point_DF$point_x[2]+25, xend=point_DF$point_x[2]+140, y=point_DF$point_y[2], yend=point_DF$point_y[2], linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
+      
+      
+      # Draw PRECIP Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[3]+30, xend=point_x[3]+120, y=point_y[3], yend=point_y[3]), color="steelblue4", linewidth=2) +
+      annotate("segment", x=point_DF$point_x[3], xend=point_DF$point_x[3]+140, y=point_DF$point_y[3], yend=point_DF$point_y[3], linejoin="round", 
+               arrow=arrow(type="closed", length=unit(0.03, "npc")), color="steelblue4") +
+      
+      
+      # Draw SPILLWAY Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[4] + 30, xend=point_x[4] + 100, y=point_y[4], yend=point_y[4]), color="steelblue4", linewidth=2) +
+      annotate("segment", x = point_x[4] + 30, xend = point_x[4] + 110, y = point_y[4], yend = point_y[4], linejoin = "round", 
+               arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
+      
+      
+      # Draw GENERATE Line Segment/Arrow
+      geom_segment(data = point_DF, aes(x=point_x[5] + 30, xend=point_x[5] + 100, y=point_y[5], yend=point_y[5]), color="steelblue4", linewidth=2) +
+      annotate("segment", x = point_x[5] + 30, xend = point_x[5] + 110, y = point_y[5], yend = point_y[5], linejoin = "round", 
+               arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
+      
+      
+      # Draw Flow annotations (text)
+      geom_text(data = point_DF, mapping = aes(x=point_x, y=point_y, label=point_label_short), 
+                linewidth = 2.5, size = 2.75, color = "white", fontface=2) + 
+      geom_text(data = point_DF, mapping = aes(x=point_x[1]+50, y=point_y[1], label=point_flow[1]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[2]+50, y=point_y[2]+5, label=point_flow[2]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[3]+50, y=point_y[3]+5, label=point_flow[3]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[4]+50, y=point_y[4]+5, label=point_flow[4]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      geom_text(data = point_DF, mapping=aes(x=point_x[5]+50, y=point_y[5]+5, label=point_flow[5]),
+                linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
+      
+      
+      # Draw Pool/Tail-water Polygons
+      geom_polygon(data = pool_water_positions, aes(x = pool_x, y = pool_y), fill = "lightskyblue1") +
+      geom_polygon(data = tail_water_positions, aes(x = tail_x, y = tail_y), fill = "skyblue2") +
+      
+      
+      # Draw the Mountain
+      geom_polygon(data = mountdf, aes(x = mountx, y = mounty), fill = "grey") +
+      geom_polygon(data = mdf2, aes(x = mx2, y = my2), fill = "gray50") +
+      geom_polygon(data = mdf3, aes(x = mx3, y = my3), fill = "gray50") +
+      geom_polygon(data = mdf4, aes(x = mx4, y = my4), fill = "gray50") +
+      
+      
+      # Draw the remaining ground connecting Mountain to reservoir
+      geom_segment(data = Res_data, aes(x = 375, xend = 375, y = Streambed[i] - 5, yend = TopofDam[i] + 5.5), color = "grey", linewidth = 2) +
+      geom_curve(data = Res_data, aes(x = 375, xend = 350, y = TopofDam[i] + 5, yend = TopofDam[i] + 7), curvature = 0.2, angle = 90, ncp = 100, linewidth = 2, color = "grey") +
+      geom_segment(data = Res_data, aes(x = 351, xend = 25, y = TopofDam[i] + 7, yend = TopofDam[i] + 7), color = "grey", linewidth = 2) +
+      
+      
+      # Draw % Full scale
+      geom_tile(data = perc_full, aes(y = y, x = 750, fill = PercFull), width = 35) +
+      scale_fill_gradient2(low = "green", mid = "yellow", high = "red", midpoint = 50) +
+      annotate("text", x = 800, y = perc_full_labels2[[i]], label = c("0%", "25%", "50%", "75%", "100%"), color = "gray19", linewidth = 2, fontface = 1) +
+      
+      
+      # Draw Elevation Scale
+      geom_segment(data = scale_elev_DF, aes(x = scale_elev_xbegin, xend = scale_elev_xend, y = scale_elev_y, yend = scale_elev_y), color = "grey", linewidth = 0.4) +
+      geom_text(data = scale_elev_DF, aes(x = scale_elev_xbegin - 30, y = scale_elev_y, label = scale_elev_y), linewidth = 2, size = 2.5, color = "gray60") +
+      
+      
+      # Draw Reservoir Pertinent Elevation Line Segments
+      geom_segment(data = Res_data, aes(y = Streambed[i], yend = Streambed[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = BottomofFlood[i], yend = BottomofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = TopofFlood[i], yend = TopofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = TopofDam[i], yend = TopofDam[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
+      geom_segment(data = Res_data, aes(y = GuideCurveElev[i], yend = GuideCurveElev[i], x = pool_water_positions$pool_x[1] + 8, xend = pool_water_positions$pool_x[3] + 100), linewidth = 0.5, linetype = 8, color = 'lightskyblue4') +
+      
+      
+      # Draw the Reservoir Pertinent Elevation Labels
+      annotate("text", x = 240, y = Res_data$TopofDam[i] - 1, label = wrapper(paste("Top of Dam", paste0(Res_data$TopofDam[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$TopofFlood[i] + 1, label = wrapper(paste("Top of Flood", paste0(Res_data$TopofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$BottomofFlood[i] - 1, label = wrapper(paste("Bottom of Flood", paste0(Res_data$BottomofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 240, y = Res_data$Streambed[i] - 1, label = wrapper(paste("Streambed", paste0(Res_data$Streambed[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
+      annotate("text", x = 900, y = as.numeric(Res_data$GuideCurveElev[i]) + 0, label = paste("Rule Curve ", paste0("(", Res_data$GuideCurveElev[i], "')")), color = "lightskyblue4", linewidth = 2, size = 2.5, fontface = 1, hjust = 0.5) +
+      
+      
+      # Draw the Pool and Tail-water Labels
+      annotate("text", x = 450, y = as.numeric(Res_data$CurrentPool[i]) - 1, label = paste0(Res_data$CurrentPoolStr[i], "(", Res_data$Change24[i], ")\n", Res_data$CurrentPoolDateTimeStr[1]), color = "gray19", size = 2.5, fontface = 1, hjust = 0, vjust = 1) +
+      annotate("text", x = 1795, y = Res_data$Streambed[i]+3.5, label = Res_data$CurrentTailStr[i], color = "gray19", size = 3.0, fontface = 1, hjust = 1) +
+      
+      # Draw Title/Additional Graphic Text
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+30, label = "FLOOD CONTROL STATUS", color = "black", linewidth = 4.5, fontface = 2, hjust = 1) + 
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+24, label = paste(Res_data$ReservoirName[i], "Lake, MVS"), color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
+      annotate("text", x = 1600, y = Res_data$TopofDam[i]+19, label = date_time, color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
+      
+      
+      # Draw Legend
+      # Adding a text annotation for the legend
+      annotate("text", x = 1655, y = Res_data$TopofDam[i] + 10, label = "Legend", color = "black", size = 3, fontface = 2, hjust = 2) +
+      # Adding a horizontal line segment
+      geom_segment(data = Res_data, aes(y = TopofDam[i] + 6, yend = TopofDam[i] + 6, x = 1460, xend = 1800), size = 1, color = 'grey') +
+      
+      # Adding a rectangular shape with light blue fill
+      geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i], ymax = TopofDam[i] + 4), fill = "lightskyblue1") +
+      # Adding a text annotation for the current lake level
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] + 2, label = "Current Lake Level", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding a rectangular shape with sky blue fill
+      geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i] - 1.5, ymax = TopofDam[i] - 5.5), fill = "skyblue2") +
+      # Adding a text annotation for tail water
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 3.5, label = "Tail Water", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding a point with label "P" for precipitation
+      geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 9.5), color = "skyblue2", size = 6) +
+      # Adding a text annotation for precipitation
+      annotate("text", x = 1480, y = Res_data$TopofDam[i] - 9.5, label = "P", color = "white", size = 1.5, fontface = 2) +
+      # Adding a text annotation for precipitation
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 9.5, label = "Precipitation", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding another point with label "IN" for inflow
+      geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 16.5), color = "skyblue2", size = 6) +
+      # Adding a text annotation for inflow
+      annotate("text", x = 1480, y = Res_data$TopofDam[i] - 16.5, label = "IN", color = "white", size = 1.5, fontface = 2) +
+      # Adding a text annotation for inflow
+      annotate("text", x = 1520, y = Res_data$TopofDam[i] - 16.5, label = "Inflow", color = "gray19", size = 3, hjust = 0) +
+      
+      
+      # Adding points for another reservoir level
+      geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-23.5), color="steelblue4", size=6) +
+      # Adding text annotation for the second point
+      annotate("text", x=1480, y=Res_data$TopofDam[i]-23.5, label="OUT", color="white", size=1.5, fontface=2) +
+      # Adding text annotation for the second point
+      annotate("text", x=1520, y=Res_data$TopofDam[i]-23.5, label="Outflow", color="gray19", size=3, hjust=0) +
     
-    # Draw the Reservoir Polygon
-    geom_polygon(data = positions, mapping = aes(x=resx, y=resy), fill="grey") +
-    
-    
-    # Draw Flow Circles
-    geom_point(data = point_DF, mapping = aes(x = point_x, y = point_y, color = point_color), size = 10) + 
-    scale_colour_manual(values = c("skyblue2", "steelblue4", "steelblue4", "skyblue2", "skyblue2"), 
-                        labels = c("Inflow", "Precipitation", "Outflow", "Generate", "Spillway")) +
-    
-    
-    # Draw INFLOW Line Segments/Arrows
-    geom_segment(data = point_DF, aes(x=50, xend=point_x[1], y=point_y[1], yend=point_y[1]), linewidth=2, color="skyblue2") + 
-    geom_segment(data = point_DF, aes(x=point_x[1], xend=point_x[1], y=point_y[1], yend=point_y[1]-14), linewidth=2, color="skyblue2") +
-    annotate("segment", x=point_DF$point_x[1], xend=point_DF$point_x[1], y=point_DF$point_y[1], yend=point_DF$point_y[1]-16, linejoin="round", 
-             arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
-    
-    
-    # Draw OUTFLOW Line Segment/Arrow
-    geom_segment(data = point_DF, aes(x=point_x[2]+30, xend=point_x[2]+120, y=point_y[2], yend=point_y[2]), color="skyblue2", linewidth=2) +
-    annotate("segment", x=point_DF$point_x[2]+25, xend=point_DF$point_x[2]+140, y=point_DF$point_y[2], yend=point_DF$point_y[2], linejoin="round", 
-             arrow=arrow(type="closed", length=unit(0.03, "npc")), color="skyblue2") +
-    
-    
-    # Draw PRECIP Line Segment/Arrow
-    geom_segment(data = point_DF, aes(x=point_x[3]+30, xend=point_x[3]+120, y=point_y[3], yend=point_y[3]), color="steelblue4", linewidth=2) +
-    annotate("segment", x=point_DF$point_x[3], xend=point_DF$point_x[3]+140, y=point_DF$point_y[3], yend=point_DF$point_y[3], linejoin="round", 
-             arrow=arrow(type="closed", length=unit(0.03, "npc")), color="steelblue4") +
-    
-    
-    # Draw SPILLWAY Line Segment/Arrow
-    geom_segment(data = point_DF, aes(x=point_x[4] + 30, xend=point_x[4] + 100, y=point_y[4], yend=point_y[4]), color="steelblue4", linewidth=2) +
-    annotate("segment", x = point_x[4] + 30, xend = point_x[4] + 110, y = point_y[4], yend = point_y[4], linejoin = "round", 
-             arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
-    
-    
-    # Draw GENERATE Line Segment/Arrow
-    geom_segment(data = point_DF, aes(x=point_x[5] + 30, xend=point_x[5] + 100, y=point_y[5], yend=point_y[5]), color="steelblue4", linewidth=2) +
-    annotate("segment", x = point_x[5] + 30, xend = point_x[5] + 110, y = point_y[5], yend = point_y[5], linejoin = "round", 
-             arrow = arrow(type = "closed", length = unit(0.03, "npc")), color = "steelblue4") +
-  
-    
-    # Draw Flow annotations (text)
-    geom_text(data = point_DF, mapping = aes(x=point_x, y=point_y, label=point_label_short), 
-              linewidth = 2.5, size = 2.75, color = "white", fontface=2) + 
-    geom_text(data = point_DF, mapping = aes(x=point_x[1]+50, y=point_y[1], label=point_flow[1]),
-              linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
-    geom_text(data = point_DF, mapping=aes(x=point_x[2]+50, y=point_y[2]+5, label=point_flow[2]),
-              linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
-    geom_text(data = point_DF, mapping=aes(x=point_x[3]+50, y=point_y[3]+5, label=point_flow[3]),
-              linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
-    geom_text(data = point_DF, mapping=aes(x=point_x[4]+50, y=point_y[4]+5, label=point_flow[4]),
-              linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
-    geom_text(data = point_DF, mapping=aes(x=point_x[5]+50, y=point_y[5]+5, label=point_flow[5]),
-              linewidth = 2.5, size = 2.5, color= "grey19", hjust=0)+
-    
-    
-    # Draw Pool/Tail-water Polygons
-    geom_polygon(data = pool_water_positions, aes(x = pool_x, y = pool_y), fill = "lightskyblue1") +
-    geom_polygon(data = tail_water_positions, aes(x = tail_x, y = tail_y), fill = "skyblue2") +
-    
-    
-    # Draw the Mountain
-    geom_polygon(data = mountdf, aes(x = mountx, y = mounty), fill = "grey") +
-    geom_polygon(data = mdf2, aes(x = mx2, y = my2), fill = "gray50") +
-    geom_polygon(data = mdf3, aes(x = mx3, y = my3), fill = "gray50") +
-    geom_polygon(data = mdf4, aes(x = mx4, y = my4), fill = "gray50") +
-    
-    
-    # Draw the remaining ground connecting Mountain to reservoir
-    geom_segment(data = Res_data, aes(x = 375, xend = 375, y = Streambed[i] - 5, yend = TopofDam[i] + 5.5), color = "grey", linewidth = 2) +
-    geom_curve(data = Res_data, aes(x = 375, xend = 350, y = TopofDam[i] + 5, yend = TopofDam[i] + 7), curvature = 0.2, angle = 90, ncp = 100, linewidth = 2, color = "grey") +
-    geom_segment(data = Res_data, aes(x = 351, xend = 25, y = TopofDam[i] + 7, yend = TopofDam[i] + 7), color = "grey", linewidth = 2) +
-    
-    
-    # Draw % Full scale
-    geom_tile(data = perc_full, aes(y = y, x = 750, fill = PercFull), width = 35) +
-    scale_fill_gradient2(low = "green", mid = "yellow", high = "red", midpoint = 50) +
-    annotate("text", x = 800, y = perc_full_labels2[[i]], label = c("0%", "25%", "50%", "75%", "100%"), color = "gray19", linewidth = 2, fontface = 1) +
-    
-    
-    # Draw Elevation Scale
-    geom_segment(data = scale_elev_DF, aes(x = scale_elev_xbegin, xend = scale_elev_xend, y = scale_elev_y, yend = scale_elev_y), color = "grey", linewidth = 0.4) +
-    geom_text(data = scale_elev_DF, aes(x = scale_elev_xbegin - 30, y = scale_elev_y, label = scale_elev_y), linewidth = 2, size = 2.5, color = "gray60") +
-    
-    
-    # Draw Reservoir Pertinent Elevation Line Segments
-    geom_segment(data = Res_data, aes(y = Streambed[i], yend = Streambed[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
-    geom_segment(data = Res_data, aes(y = BottomofFlood[i], yend = BottomofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
-    geom_segment(data = Res_data, aes(y = TopofFlood[i], yend = TopofFlood[i], x = 250, xend = 735), linewidth = 0.5, linetype = 8, color = 'red') +
-    geom_segment(data = Res_data, aes(y = TopofDam[i], yend = TopofDam[i], x = 250, xend = 370), linewidth = 0.5, linetype = 8, color = 'red') +
-    geom_segment(data = Res_data, aes(y = GuideCurveElev[i], yend = GuideCurveElev[i], x = pool_water_positions$pool_x[1] + 8, xend = pool_water_positions$pool_x[3] + 100), linewidth = 0.5, linetype = 8, color = 'lightskyblue4') +
-    
-    
-    # Draw the Reservoir Pertinent Elevation Labels
-    annotate("text", x = 240, y = Res_data$TopofDam[i] - 1, label = wrapper(paste("Top of Dam", paste0(Res_data$TopofDam[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
-    annotate("text", x = 240, y = Res_data$TopofFlood[i] + 1, label = wrapper(paste("Top of Flood", paste0(Res_data$TopofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
-    annotate("text", x = 240, y = Res_data$BottomofFlood[i] - 1, label = wrapper(paste("Bottom of Flood", paste0(Res_data$BottomofFlood[i], "'")), width = 15), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
-    annotate("text", x = 240, y = Res_data$Streambed[i] - 1, label = wrapper(paste("Streambed", paste0(Res_data$Streambed[i], "'")), width = 10), color = "red", linewidth = 2, size = 3.0, fontface = 1, hjust = 1) +
-    annotate("text", x = 900, y = as.numeric(Res_data$GuideCurveElev[i]) + 0, label = paste("Rule Curve ", paste0("(", Res_data$GuideCurveElev[i], "')")), color = "lightskyblue4", linewidth = 2, size = 2.5, fontface = 1, hjust = 0.5) +
-    
-    
-    # Draw the Pool and Tail-water Labels
-    annotate("text", x = 450, y = as.numeric(Res_data$CurrentPool[i]) - 1, label = paste0(Res_data$CurrentPoolStr[i], "(", Res_data$Change24[i], ")\n", Res_data$CurrentPoolDateTimeStr[1]), color = "gray19", size = 2.5, fontface = 1, hjust = 0, vjust = 1) +
-    annotate("text", x = 1795, y = Res_data$Streambed[i]+3.5, label = Res_data$CurrentTailStr[i], color = "gray19", size = 3.0, fontface = 1, hjust = 1) +
-    
-    # Draw Title/Additional Graphic Text
-    annotate("text", x = 1600, y = Res_data$TopofDam[i]+30, label = "FLOOD CONTROL STATUS", color = "black", linewidth = 4.5, fontface = 2, hjust = 1) + 
-    annotate("text", x = 1600, y = Res_data$TopofDam[i]+24, label = paste(Res_data$ReservoirName[i], "Lake, MVS"), color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
-    annotate("text", x = 1600, y = Res_data$TopofDam[i]+19, label = date_time, color = "gray19", linewidth = 3.5, fontface = 1, hjust = 1) + 
-    
-    
-    # Draw Legend
-    # Adding a text annotation for the legend
-    annotate("text", x = 1655, y = Res_data$TopofDam[i] + 10, label = "Legend", color = "black", size = 3, fontface = 2, hjust = 2) +
-    # Adding a horizontal line segment
-    geom_segment(data = Res_data, aes(y = TopofDam[i] + 6, yend = TopofDam[i] + 6, x = 1460, xend = 1800), size = 1, color = 'grey') +
-    
-    # Adding a rectangular shape with light blue fill
-    geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i], ymax = TopofDam[i] + 4), fill = "lightskyblue1") +
-    # Adding a text annotation for the current lake level
-    annotate("text", x = 1520, y = Res_data$TopofDam[i] + 2, label = "Current Lake Level", color = "gray19", size = 3, hjust = 0) +
-  
-    
-    # Adding a rectangular shape with sky blue fill
-    geom_rect(data = Res_data, mapping = aes(xmin = 1460, xmax = 1500, ymin = TopofDam[i] - 1.5, ymax = TopofDam[i] - 5.5), fill = "skyblue2") +
-    # Adding a text annotation for tail water
-    annotate("text", x = 1520, y = Res_data$TopofDam[i] - 3.5, label = "Tail Water", color = "gray19", size = 3, hjust = 0) +
-    
-    
-    # Adding a point with label "P" for precipitation
-    geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 9.5), color = "skyblue2", size = 6) +
-    # Adding a text annotation for precipitation
-    annotate("text", x = 1480, y = Res_data$TopofDam[i] - 9.5, label = "P", color = "white", size = 1.5, fontface = 2) +
-    # Adding a text annotation for precipitation
-    annotate("text", x = 1520, y = Res_data$TopofDam[i] - 9.5, label = "Precipitation", color = "gray19", size = 3, hjust = 0) +
-    
-    
-    # Adding another point with label "IN" for inflow
-    geom_point(data = Res_data, mapping = aes(x = 1480, y = TopofDam[i] - 16.5), color = "skyblue2", size = 6) +
-    # Adding a text annotation for inflow
-    annotate("text", x = 1480, y = Res_data$TopofDam[i] - 16.5, label = "IN", color = "white", size = 1.5, fontface = 2) +
-    # Adding a text annotation for inflow
-    annotate("text", x = 1520, y = Res_data$TopofDam[i] - 16.5, label = "Inflow", color = "gray19", size = 3, hjust = 0) +
-  
-    
-    # Adding points for various reservoir levels
-    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-23.5), color="steelblue4", size=6) +
-    # Adding text annotation for the first point
-    annotate("text", x=1480, y=Res_data$TopofDam[i]-23.5, label="SPWY", color="white", size=1.5, fontface=2) +
-    # Adding text annotation for the first point
-    annotate("text", x=1520, y=Res_data$TopofDam[i]-23.5, label="Spillway (Yesterday)", color="gray19", size=3, hjust=0) +
-    
-    
-    # Adding points for another reservoir level
-    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-30.5), color="steelblue4", size=6) +
-    # Adding text annotation for the second point
-    annotate("text", x=1480, y=Res_data$TopofDam[i]-30.5, label="OUT", color="white", size=1.5, fontface=2) +
-    # Adding text annotation for the second point
-    annotate("text", x=1520, y=Res_data$TopofDam[i]-30.5, label="Outflow", color="gray19", size=3, hjust=0) +
-    
-
-    # Adding points for another reservoir level
-    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-37.5), color="steelblue4", size=6) +
-    # Adding text annotation for the third point
-    annotate("text", x=1480, y=Res_data$TopofDam[i]-37.5, label="GEN", color="white", size=1.5, fontface=2) +
-    # Adding text annotation for the third point
-    annotate("text", x=1520, y=Res_data$TopofDam[i]-37.5, label="Generate (Yesterday)", color="gray19", size=3, hjust=0) +
-    
-    # Adding points for another reservoir level
-    geom_point(data=Res_data, mapping=aes(x=1480, y=TopofDam[i]-44.5), color="steelblue4", size=6) +
-    # Adding text annotation for the third point
-    annotate("text", x=1480, y=Res_data$TopofDam[i]-44.5, label="TOT", color="white", size=1.5, fontface=2) +
-    # Adding text annotation for the third point
-    annotate("text", x=1520, y=Res_data$TopofDam[i]-44.5, label="Flow Total (Yesterday Avg)", color="gray19", size=3, hjust=0) +
-  
-    
-    # Set Theme and Scale for Graphic
-    theme_void() + 
-    theme(legend.position="none") +
-    scale_y_continuous(limits = c(Res_data$Streambed[i]-10, Res_data$TopofDam[i]+30)) +
-    scale_x_continuous(limits = c(25,1800)) +
-    theme(panel.background = element_rect(fill='white',color='white'))+
-    theme(legend.position="none",
-          panel.background = element_rect(fill='white', color='white', size = 1), # Add border
-          
-          #panel.grid.major = element_line(color = "gray", size = 0.5),
-          #panel.grid.minor = element_line(color = "gray", size = 0.25),
-          #panel.grid.major.x = element_line(color = "gray", size = 0.5),
-          #panel.grid.minor.x = element_line(color = "gray", size = 0.25),
-          #panel.grid.major.y = element_line(color = "gray", size = 0.5),
-          #panel.grid.minor.y = element_line(color = "gray", size = 0.25),
-          
-          plot.background = element_rect(color = "black", size = 1), # Add border to the entire plot
-          plot.margin = margin(10, 10, 10, 10))+ # Adjust margins as needed
-    # Add vertical line at x = 0
-    geom_vline(xintercept = 0, linetype = "dashed", color = "red", size = 1) +
-    # Add horizontal line at y = 0
-    geom_hline(yintercept = 0, linetype = "dashed", color = "blue", size = 1)
-  
+      
+      # Set Theme and Scale for Graphic
+      theme_void() + 
+      theme(legend.position="none") +
+      scale_y_continuous(limits = c(Res_data$Streambed[i]-10, Res_data$TopofDam[i]+30)) +
+      scale_x_continuous(limits = c(25,1800)) +
+      theme(panel.background = element_rect(fill='white',color='white'))+
+      theme(legend.position="none",
+            panel.background = element_rect(fill='white', color='white', size = 1), # Add border
+            
+            #panel.grid.major = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor = element_line(color = "gray", size = 0.25),
+            #panel.grid.major.x = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor.x = element_line(color = "gray", size = 0.25),
+            #panel.grid.major.y = element_line(color = "gray", size = 0.5),
+            #panel.grid.minor.y = element_line(color = "gray", size = 0.25),
+            
+            plot.background = element_rect(color = "black", size = 1), # Add border to the entire plot
+            plot.margin = margin(10, 10, 10, 10))+ # Adjust margins as needed
+      # Add vertical line at x = 0
+      geom_vline(xintercept = 0, linetype = "dashed", color = "red", size = 1) +
+      # Add horizontal line at y = 0
+      geom_hline(yintercept = 0, linetype = "dashed", color = "blue", size = 1)
+  }
   plot(p1)
   # Print information for debugging
   print(paste("Generated ReservoirName:", Res_data$ReservoirName[i]))
